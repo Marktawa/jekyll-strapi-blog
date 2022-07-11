@@ -198,3 +198,9 @@ exports
 build
 .strapi-updater.json
 db.json
+
+############################
+# Jekyll
+############################
+
+jekyll-blog/_posts/

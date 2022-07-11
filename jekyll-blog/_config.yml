@@ -22,8 +22,7 @@ title: 3 plugins to power up your Jekyll Blog
 email: craigsims808@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Plugins are a powerful tool to customize and extend the functionality of your
-  Strapi App. The Strapi Market is the official marketplace to find plugins comprising
-  more than 60 to choose from. These plugins were developed by the Strapi team . . . 
+  Strapi App. The Strapi Market . . . 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: craigsims808
@@ -33,23 +32,6 @@ github_username:  craigsims808
 theme: minima
 plugins:
   - jekyll-feed
-  - jekyll-strapi-mod
-strapi:
-  # Your API endpoint (optional, default to http://localhost:1337/api)
-  endpoint: http://localhost:1337/api
-  # Collections, key is used to access in the strapi.collections
-  # template variable
-  collections:
-    # Example for a "posts" collection
-    posts:
-      # Collection name (optional). Used to construct the url requested. Example: type `foo` would generate the following url `http://localhost:1337/foo`.
-      type: posts
-       # Permalink used to generate the output files (eg. /posts/:id).
-      permalink: /posts/:id/
-      # Layout file for this collection
-      # layout: post.html
-      # Generate output files or not (default: false)
-      # output: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -58,15 +40,16 @@ strapi:
 #
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+exclude:
+   - .sass-cache/
+   - .jekyll-cache/
+   - gemfiles/
+   - Gemfile
+   - Gemfile.lock
+   - node_modules/
+   - vendor/bundle/
+   - vendor/cache/
+   - vendor/gems/
+   - vendor/ruby/
+   - jekapi.rb
+   - db.json

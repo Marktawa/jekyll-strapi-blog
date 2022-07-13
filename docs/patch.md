@@ -335,15 +335,30 @@ Now that we have set up our blog, let's power it up with some plugins
 
 # i18n Plugin
 
-[Internationalization](https://www.w3.org/International/questions/qa-i18n.en#i18n) is a cool feature you can add to your blog. A blog which supports more than one locale covers a much wider audience.
+[Internationalization](https://www.w3.org/International/questions/qa-i18n.en#i18n) is the process of developing your software so it can be localized to a particular audience that may vary based on culture, language, or region. For example, it could mean removing all the hard-coded strings in your application and putting them in a JSON file. It is a cool feature you can add to your blog. A blog which supports more than one locale covers a much wider audience.
 
 The [Strapi Internationalization (i18n) Plugin](https://market.strapi.io/plugins/@strapi-plugin-i18n) allows Strapi users to create, manage and distribute translated content in multiple languages. 
 
 ## Features
 
-This plugin was developed in house by the Strapi Team
+This plugin was developed in house by the Strapi Team. Its features include:
+- Admin panel users can create several localized versions of their content
+- Developers can build localized projects by fetching and consuming the right content depending on the country/language of the audience
 
 ## Installation
+
+Strapi v4 comes with i18n plugin by default. The other way is through NPM. To install this plugin, you need to add an NPM dependency to your Strapi application:
+
+```sh
+# Using Yarn
+yarn add @strapi/plugin-i18n
+
+# Or using NPM
+npm install @strapi/plugin-i18n
+```
+
+
+
 ## Configuration
 ## How to use it
 

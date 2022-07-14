@@ -6,11 +6,12 @@ require 'ostruct'
 url = 'http://localhost:1337/api/posts?populate=*'
 uri = URI(url)
 response = Net::HTTP.get(uri)
+puts response
 
 result = JSON.parse(response, object_class: OpenStruct)
 puts result
 
-puts result.data[0].attributes.localizations.data[0].title
+puts result.data[0].attributes.localizations.data[0].attributes.title
 
 =begin
 result.data.each do |document|

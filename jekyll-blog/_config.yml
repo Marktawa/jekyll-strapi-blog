@@ -32,6 +32,7 @@ github_username:  craigsims808
 theme: minima
 plugins:
   - jekyll-feed
+# - jekyll-polyglot
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -53,3 +54,8 @@ exclude:
    - vendor/ruby/
    - jekapi.rb
    - db.json
+
+#languages: ["en", "fr"]
+#default_lang: "en"
+#exclude_from_localization: ["javascript", "images", "*.css", "public", "*.scss", "*.map", "assets"]
+#parallel_localization: true

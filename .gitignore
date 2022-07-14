@@ -197,11 +197,11 @@ exports
 *.cache
 build
 .strapi-updater.json
-db.json
+#db.json
 
 ############################
 # Jekyll
 ############################
 
 jekyll-blog/_posts/
-tests/
+#tests/

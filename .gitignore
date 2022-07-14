@@ -81,7 +81,7 @@ test/dest
 tmp/*
 
 # Liquid
-.liquidrc
+#.liquidrc
 
 ############################
 # OS X
@@ -150,7 +150,7 @@ $RECYCLE.BIN/
 # Logs and databases
 ############################
 
-.tmp
+#.tmp
 *.log
 *.sql
 *.sqlite
@@ -191,7 +191,7 @@ coverage
 # Strapi
 ############################
 
-.env
+#.env
 license.txt
 exports
 *.cache

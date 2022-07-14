@@ -347,20 +347,55 @@ This plugin was developed in house by the Strapi Team. Its features include:
 
 ## Installation
 
-Strapi v4 comes with i18n plugin by default. The other way is through NPM. To install this plugin, you need to add an NPM dependency to your Strapi application:
+Strapi v4 comes with i18n plugin by default. The other way is through `NPM`. To install this plugin, you need to add an NPM dependency to your Strapi application:
 
 ```sh
 # Using Yarn
-yarn add @strapi/plugin-i18n
+yarn strapi install i18n
 
 # Or using NPM
-npm install @strapi/plugin-i18n
+npm run strapi install i18n
 ```
 
-
-
 ## Configuration
-## How to use it
+
+A `STRAPI_PLUGIN_I18N_INIT_LOCALE_CODE` [**environment variable**](https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/configurations/optional/environment.html#strapi-s-environment-variables) can be configured to set the default locale for your environment. The plugin uses an [ISO country code](https://github.com/strapi/strapi/blob/v4.0.0/packages/plugins/i18n/server/constants/iso-locales.json) as the value for the **environment variable**.
+
+This is useful when a Strapi application is deployed in a production environment, with the i18n plugin enabled
+
+## How to use it i18n with the REST API
+
+Our blog is using Strapi as a REST API endpoint. The i18n plugin adds new features to the REST API:
+
+- a new `locale` parameter to fetch content for a specified locale
+- creating and updating localized entries
+
+Our blog will fetch localized entries with the locale parameter. The response to requests will include a string field `locale` for the locale code for the content entry and an object `localizations` which contains a data array of the `id` and `attributes` of the localization.
+
+Go back to your Strapi Admin Dashboard and make sure that internationalization is enabled. Navigate to **General** > **Plugins** and make sure that internationalization is seen on the list of installed plugins: ![List of Installed Plugins in Strapi](https://www.dropbox.com/s/vn222r800pfpy33/list-of-installed-plugins.png?raw=1).
+
+If you face any issues with installation refer to the [Strapi i18n plugin documentation](https://docs.strapi.io/developer-docs/latest/plugins/i18n.html#installation). 
+
+Let's set up a new locale for our blog. Proceed to **Settings** > **Internationalization** and click on **"Add new locale"**. For this tutorial choose **French (fr)**:
+
+![Add new Locale in Strapi](https://www.dropbox.com/s/kmyqlvkyr147bkb/add-new-i18n-locale.png?raw=1)
+
+We need to enable localization for the **Post** collection. Navigate to **Content-Type Builder** > **Post**, click on **Edit**. Inside the pop-up, select **Advanced Settings** and check the box labeled **Enable localization for this Content-Type**. Wait for your server to restart for the changes to take effect:
+
+![Enable Localization for the Content-Type in Strapi](https://www.dropbox.com/s/7zmm8l6ga3icwn0/enable-localization-in-strapi-content-type-builder.png?raw=1)
+
+Next, add translations to your blog posts. Go to **Content Manager** > **COLLECTION TYPES** > **Post**. Select one of your blog post entries. You should see the **INTERNATIONALIZATION** tab in the side panel with a **Locales** drop-down:
+
+![Internationalization available for Collection-Type in Strapi](https://www.dropbox.com/s/x9yjr1j0xpphc5w/strapi-internationalization-enabled-in-collection.png?raw=1)
+
+Click on the **Locales** drop-down and create content for your locale. After selecting your second locale, you’ll be taken to a new page to enter your translated content:
+
+![Create post for French locale](https://www.dropbox.com/s/33y1837w5dj5c32/create-post-for-french-locale.png?raw=1)
+
+Once you’ve created your content click **Save**, repeat the same procedure for the other posts and you should have a few published entries with content available in multiple locales:
+
+![Strapi Posts with multiple Locales](https://www.dropbox.com/s/apwaeq877f4bvhl/strapi-posts-with-multiple-locales.png?raw=1)
+
 
 # SEO Plugin
 

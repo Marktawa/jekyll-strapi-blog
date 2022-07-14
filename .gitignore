@@ -204,4 +204,5 @@ build
 ############################
 
 jekyll-blog/_posts/
+jekyll-blog/fr/_posts/
 #tests/

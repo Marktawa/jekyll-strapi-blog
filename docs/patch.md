@@ -447,13 +447,13 @@ result.data.each do |document|
 
 Create a folder for your French content in your Jekyll working directory. Name the folder **fr** to match with the `locale: fr` configured in the Strapi dashboard. Within **fr** create a directory named **_posts**.
 
-Run the `jekapi.rb` script, then launch your Jekyll site. Open one of the posts and add a `/fr/` prefix to the site link to view the French version of your post. For example, There you have it, a simple implementation of internationalization in your website:
+Run the `jekapi.rb` script, then launch your Jekyll site. Open one of the posts and add a `/fr/` prefix to the site link to view the French version of your post. There you have it, a simple implementation of internationalization in your website:
 
 ![Jekyll Blog Post with multiple locales](https://www.dropbox.com/s/8qgajnb7wo8f5y8/jekyll-blog-post-with-multiple-locales.png?raw=1)
 
 # SEO Plugin
 
-What's a good blog without some [SEO](https://developers.google.com/search/docs/beginner/seo-starter-guide). The [Strapi Team developed the Strapi plugin SEO](https://market.strapi.io/plugins/@strapi-plugin-seo) to help with that
+What's a good blog without some [SEO](https://developers.google.com/search/docs/beginner/seo-starter-guide). The [Strapi Team developed the Strapi plugin SEO](https://market.strapi.io/plugins/@strapi-plugin-seo) to help with that.
 
 ## Features
 

@@ -49,6 +49,16 @@
     "Slug": {
       "type": "uid",
       "targetField": "title"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

@@ -1,6 +1,14 @@
-Plugins are a powerful tool to customize and extend the functionality of your Strapi app. [The Strapi Market](https://market.strapi.io/) is the official marketplace to find plugins comprising more than 60 plugins to choose from. These plugins were developed by the Strapi team, technology and solution partners, and individual community members. You can find plugins that integrate Strapi with other tools, such as Sentry, Mux, and Moesif, and plugins that extend Strapi features, such as SEO, content versioning, comments moderation, internationalization, database configuration, sitemap, and more.
+# Outline
+
+- Introduction
+- Backend Setup
+- Frontend Setup
+- Plugin Setup
+- Conclusion
 
 # Introduction
+
+Plugins are a powerful tool to customize and extend the functionality of your Strapi app. [The Strapi Market](https://market.strapi.io/) is the official marketplace to find plugins comprising more than 60 plugins to choose from. These plugins were developed by the Strapi team, technology and solution partners, and individual community members. You can find plugins that integrate Strapi with other tools, such as Sentry, Mux, and Moesif, and plugins that extend Strapi features, such as SEO, content versioning, comments moderation, internationalization, database configuration, sitemap, and more.
 
 This tutorial aims to show how you can enhance functionality in your Strapi blog, by making use of 3 plugins from the Strapi Market. You will use the official Strapi SEO plugin to make your content more SEO friendly, the Internationalization (i18n) plugin to help distribute the content in different languages, and the Comments plugin to moderate comments on your blog. You will start by creating a simple static blog with Strapi as the backend and Jekyll for the frontend. Then you will install the plugins and show their use cases. At the end of this tutorial, you should know how to install and use plugins from the Strapi Market to power up your app.
 
@@ -32,7 +40,7 @@ The goals of our tutorial are as follows:
 - Install and showcase the functionality of the following plugins:
   - [Internationalization (i18n) plugin](https://market.strapi.io/plugins/@strapi-plugin-i18n)
   - [SEO plugin](https://market.strapi.io/plugins/@strapi-plugin-seo)
-  - [Comments plugin](https://market.strapi.io/plugins/strapi-plugin-comments)
+  - [Cloudinary Upload Provider plugin](https://market.strapi.io/providers/@strapi-provider-upload-cloudinary)
 
 ## Prerequisites
 
@@ -52,7 +60,7 @@ To complete the tutorial, the following prerequisites need to be installed:
 
 > **NOTE:**
 >
-> Knowledge of the Ruby language and the Liquid templating language are not necessary to understand and complete the tutorial.
+> Knowledge of the Ruby language and the Liquid templating language are not necessary but can be helpful to understand and complete the tutorial.
 
 You can find the instructions on how to install Jekyll on the [Installation page for the Jekyll website](https://jekyllrb.com/docs/installation/). 
 
@@ -662,7 +670,7 @@ Now your blog can benefit from faster performance loading images hosted on a CDN
 
 That's it. You have seen the power and ease of creating a Jekyll blog powered by Strapi as a headless CMS to store your content and provide the content securely through a REST API. You powered up your blog by adding **Internationalization**, **SEO** and **Cloudinary** as an external upload provider to help manage your media and improve loading speed of your media assets.
 
-Next, you could look at a deployment strategy for your blog on a production server. See this article[]() or look at adding some more plugins to your blog by checking out the numerous options on the [Strapi Market](https://market.strapi.io)
+Next, you could look at a deployment strategy for your blog on a production server. See this [Strapi deployment guide](https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/deployment.html). You can also tinker with adding some more plugins to your blog by checking out the numerous options on the [Strapi Market](https://market.strapi.io)
 
 I hope you were able to follow along. Here's the [repo with the complete source code](https://github.com/Marktawa/jekyll-strapi-blog) if you want to test out the full working version of the blog.
 

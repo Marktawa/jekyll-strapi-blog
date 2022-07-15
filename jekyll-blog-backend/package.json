@@ -14,6 +14,7 @@
     "@strapi/plugin-i18n": "4.2.0",
     "@strapi/plugin-seo": "^1.7.4",
     "@strapi/plugin-users-permissions": "4.2.0",
+    "@strapi/provider-upload-cloudinary": "^4.2.3",
     "@strapi/strapi": "4.2.0",
     "better-sqlite3": "7.4.6"
   },

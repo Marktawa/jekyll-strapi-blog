@@ -500,16 +500,169 @@ Your Strapi dashboard should now have **SEO** listed under **Plugins**:
 
 ## How to use it
 
+Go to [localhost:1337/admin/plugins/seo](http://localhost:1337/admin/plugins/seo) and under the **Collection Types** tab select **+Add component** for the **Post** collection type. You will be directed to the **Content-Type Builder** for the **Post** collection. The SEO plugin enables you to add shared components to your collection type. Listed under the **Shared** components is **MetaSocial** and **SEO**:
 
+![Strapi Content Type Builder with SEO Plugin](https://www.dropbox.com/s/z9xmlbirpwyqzuz/strapi-seo-content-type-builder.png?raw=1)
+
+Next select **Add another field** in **Post**  under **Collection Types**. Choose **Component** from the pop-up. In the **Add new component** menu select **Use an existing component** and click on **Select a component**. The **Select a component** drop-down will show the available existing components from the SEO plugin, **shared - metaSocial** and **shared - seo**. Choose **shared - seo** and name it **seo**. Click *Finish* then *Save* and wait for your server to restart:
+
+![Add seo component to Strapi Content Type](https://www.dropbox.com/s/zokwbtmxlbc1k8w/shared-seo-component-strapi-content-type-builder.png?raw=1)
+
+The `seo` component should now be listed under the **Post** collection type in the **Content-Type Builder** and if you check the **SEO** plugin menu you will find **Post** collection type has been added:
+
+![Strapi SEO plugin with added collection type](https://www.dropbox.com/s/mp5543xpfjzde6h/strapi-seo-plugin-added-post-collection-type.png?raw=1)
+
+Now for the fun stuff. Select one of your posts in the **Content Manager**. The **SEO Plugin** menu should be available in the right side section of your post. It contains *Browser Preview*, *Social Preview* and *SEO Summary* for your blog post. Below the *Slug* text box is the *seo* component for you to add the necessary SEO entries for your blog post:
+
+![Strapi SEO plugin in Content Manager](https://www.dropbox.com/s/959illhpx3icjfc/strapi-content-manager-with-seo-plugin.png?raw=1)
+
+Click on`+` in the *seo* box. In the pop-up you will see numerous seo entries to fill for your post. Add **metaTitle**, **metaDescription**, **metaImage** and **keywords** entries for your post, select **+ Add an entry** then click *Save*:
+
+![Add SEO entries to post in Strapi Content Manager](https://www.dropbox.com/s/fcshatesl6dxe8q/add-seo-entries-in-strapi-content-manager.png?raw=1)
+
+The **SEO Summary** will give you hints together with the **SEO Analyzer** to improve your SEO entry performances.
+
+![SEO Summary in Strapi Content Manager](https://www.dropbox.com/s/jo6hjd2cqzttlg1/seo-summary-strapi-content-manager.png?raw=1)
+
+The **SEO Analyzer** provides more context for your SEO to boost your performance so that you can have an SEO friendly `metatitle` and `metadescription` in your blog.
+
+![SEO Analyzer in Strapi Content Manager](https://www.dropbox.com/s/g94sf55iawg7xev/seo-analyzer-strapi-content-manager.png?raw=1)
+
+For more in-depth uses for the Strapi SEO Plugin check out [The first Strapi SEO plugin article](https://strapi.io/blog/the-first-strapi-seo-plugin).
 
 # Cloudinary Provider Plugin
 
+Now that your blog has i18n and improved SEO, an external media management solution can enhance your blog. Enter [Cloudinary](https://cloudinary.com/). 
+
 ## Features
+
+Cloudinary is an image and video management solution for websites and mobile apps. It covers everything from image and video uploads, storage, manipulations, optimizations to delivery. Cloudinary can deliver very large amounts of data through a fast [Content Delivery Network (CDN)](https://en.wikipedia.org/wiki/Content_delivery_network). This frees your backend from performance bottlenecks and frees up resources on your server.
 
 ## Installation
 
+Create a [free Cloudinary account](https://cloudinary.com/users/register/free) and after verifying your email you will be redirected to the management dashboard of your account:
+
+![Cloudinary Account Management Dashboard](https://www.dropbox.com/s/le520andlo8eync/cloudinary-management-console.png?raw=1)
+
+Copy and save the following **Account Details**:
+- Cloud Name
+- API Key
+- API Secret
+
+> **SECURITY REMINDER**
+>
+> Save your account credentials somewhere safe and keep them secret.
+
+Go back to your Strapi blog backend and stop the server using `Ctrl + C`. Install the [Strapi Cloudinary Provider Plugin](https://market.strapi.io/providers/@strapi-provider-upload-cloudinary):
+
+```sh
+# using yarn
+yarn add @strapi/provider-upload-cloudinary
+
+# using npm
+npm install @strapi/provider-upload-cloudinary --save
+```
+
 ## Configuration
+
+### Provider Configuration
+
+Add the following to `./config/plugins.js`:
+
+```js
+module.exports = ({ env }) => ({
+  // ...
+  upload: {
+    config: {
+      provider: 'cloudinary',
+      providerOptions: {
+        cloud_name: env('CLOUDINARY_NAME'),
+        api_key: env('CLOUDINARY_KEY'),
+        api_secret: env('CLOUDINARY_SECRET'),
+      },
+      actionOptions: {
+        upload: {},
+        uploadStream: {},
+        delete: {},
+      },
+    },
+  },
+  // ...
+})
+```
+
+In the root directory of your Strapi blog backend create a .env file and add the following variables and with their respective values. These can be found in your Cloudinary dashboard under **Account Details**:
+
+```js
+CLOUDINARY_NAME = cloudinary-name
+CLOUDINARY_KEY = cloudinary-key
+CLOUDINARY_SECRET = cloudinary-secret
+```
+
+### Security Middleware Configuration
+
+Due to the default settings in the Strapi Security Middleware you will need to modify the `contentSecurityPolicy` settings to properly see thumbnail previews in the Media Library i.e. you will be able to preview images uploaded to Cloudinary in your Strapi Admin dashboard.  You should replace `strapi::security` string with the object below in `./config/middlewares.js` as explained in the [middleware configuration documentation](https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/configurations/required/middlewares.html#loading-order).
+
+```js
+module.exports = [
+  // ...
+  {
+    name: 'strapi::security',
+    config: {
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          'connect-src': ["'self'", 'https:'],
+          'img-src': ["'self'", 'data:', 'blob:', 'dl.airtable.com', 'res.cloudinary.com'],
+          'media-src': ["'self'", 'data:', 'blob:', 'dl.airtable.com', 'res.cloudinary.com'],
+          upgradeInsecureRequests: null,
+        },
+      },
+    },
+  },
+  // ...
+];
+```
+Restart your Strapi server to complete the configuration. After uploading an image, it will upload to Cloudinary.
 
 ## How to use it
 
+Upload an image to one of your *posts* in **Post** collection in the **Content Manager**. Select **Add new assets** then upload an image, tick the one you want and click on **Finish**.
+
+![Add image to Strapi Post](https://www.dropbox.com/s/75lxq0w8gvzgord/add-image-to-strapi-post.png?raw=1)
+
+Your blog post now has a link to your image hosted on the Cloudinary cloud provider.
+
+![Link to image hosted on Cloudinary](https://www.dropbox.com/s/rnu4vwcd2bz5507/cloudinary-image-link-in-strapi-post.png?raw=1)
+
+Navigate to your **Cloudinary Management Console - Media Library** and you should see the images you uploaded appear there.
+
+![Cloudinary Management Console - Media Library](https://www.dropbox.com/s/on77bx3src3h5it/cloudinary-media-library.png?raw=1)
+
+Next let's rebuild our Jekyll site to see the changes take effect. In your Jekyll frontend working directory stop the Jekyll server using `Ctrl+C` if you haven't already. Next, in the root folder of your Jekyll blog, clean your site:
+
+```sh
+$ bundle exec jekyll clean
+```
+
+Run the `jekapi.rb` script to update your posts, then start the Jekyll server
+
+```sh
+$ ruby jekapi.rb
+$ bundle exec jekyll serve
+```
+
+Navigate to the post you have updated with an image. If you have configured your Cloudinary Upload Provider plugin correctly, an image should appear in your post and if you inspect the `html` for the image, it should show the cloudinary url to the image.
+
+![Jekyll post with image hosted on Cloudinary](https://www.dropbox.com/s/xt1ft1vndp6e499/jekyll-blog-post-with-cloudinary-image.png?raw=1)
+
+Now your blog can benefit from faster performance loading images hosted on a CDN at the same time off loading some work for your Strapi backend server.
+
 # Conclusion
+
+That's it. You have seen the power and ease of creating a Jekyll blog powered by Strapi as a headless CMS to store your content and provide the content securely through a REST API. You powered up your blog by adding **Internationalization**, **SEO** and **Cloudinary** as an external upload provider to help manage your media and improve loading speed of your media assets.
+
+Next, you could look at a deployment strategy for your blog on a production server. See this article[]() or look at adding some more plugins to your blog by checking out the numerous options on the [Strapi Market](https://market.strapi.io)
+
+I hope you were able to follow along. Here's the [repo with the complete source code](https://github.com/Marktawa/jekyll-strapi-blog) if you want to test out the full working version of the blog.
+

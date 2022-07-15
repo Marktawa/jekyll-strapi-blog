@@ -1,10 +1,8 @@
-
 Plugins are a powerful tool to customize and extend the functionality of your Strapi app. [The Strapi Market](https://market.strapi.io/) is the official marketplace to find plugins comprising more than 60 plugins to choose from. These plugins were developed by the Strapi team, technology and solution partners, and individual community members. You can find plugins that integrate Strapi with other tools, such as Sentry, Mux, and Moesif, and plugins that extend Strapi features, such as SEO, content versioning, comments moderation, internationalization, database configuration, sitemap, and more.
 
 # Introduction
 
 This tutorial aims to show how you can enhance functionality in your Strapi blog, by making use of 3 plugins from the Strapi Market. You will use the official Strapi SEO plugin to make your content more SEO friendly, the Internationalization (i18n) plugin to help distribute the content in different languages, and the Comments plugin to moderate comments on your blog. You will start by creating a simple static blog with Strapi as the backend and Jekyll for the frontend. Then you will install the plugins and show their use cases. At the end of this tutorial, you should know how to install and use plugins from the Strapi Market to power up your app.
-
 
 ## Why Strapi?
 
@@ -15,7 +13,6 @@ Strapi is open source *forever*, the entire codebase is available and maintained
 The APIs you generate using Strapi can be consumed using any frontend client from vanilla HTML, CSS and Javascript sites to frontend frameworks like React, Vue, Angular etc. to mobile apps and even IoT devices using REST or GraphQL. 
 
 Another reason why Strapi is so compelling is that you can self-host it. That’s right, you can host on your own servers or any other hosting providers. This includes cloud platforms such as 21YunBox, Render, Heroku, AWS, Azure and others or locally using Docker
-
 
 ## What is Strapi Market?
 
@@ -31,29 +28,27 @@ Jekyll was developed using the Ruby language and uses Liquid as its templating l
 
 The goals of our tutorial are as follows:
 
-
 - Build a simple static blog using Jekyll and Strapi
 - Install and showcase the functionality of the following plugins:
-    - [Internationalization (i18n) plugin](https://market.strapi.io/plugins/@strapi-plugin-i18n)
-    - [SEO plugin](https://market.strapi.io/plugins/@strapi-plugin-seo)
-    - [Comments plugin](https://market.strapi.io/plugins/strapi-plugin-comments)
+  - [Internationalization (i18n) plugin](https://market.strapi.io/plugins/@strapi-plugin-i18n)
+  - [SEO plugin](https://market.strapi.io/plugins/@strapi-plugin-seo)
+  - [Comments plugin](https://market.strapi.io/plugins/strapi-plugin-comments)
+
 ## Prerequisites
 
 To complete the tutorial, the following prerequisites need to be installed:
 
-**Backend**
+### **Backend**
 
 - [Node.js](https://www.nodejs.org): Node.js is the server-side runtime environment used to run our Strapi application. only LTS versions are supported (minimum v12). You can download from the [Downloads | Node.js](https://nodejs.org/en/download/) page and install it using the provided instructions. To check if Node.js has been installed correctly, open up your command line and type `node -v`
-    
 - [npm](https://www.npmjs.com/) (minimum v6) or [yarn](https://yarnpkg.com/): the package manager for Node.js to run the CLI scripts. We will use this to install Strapi. npm comes bundled with Node.js. To check your version enter `npm -v` in your shell. If you prefer yarn, follow the instructions on the [Installation | Yarn - Package Manager page](https://yarnpkg.com/getting-started/install) to install it. To check if yarn is installed type `yarn -v` in your shell after installation.
 
-**Frontend**
+### **Frontend**
 
 - Ruby v2.5.0 or higher, including all development headers (check ruby installation using `ruby -v`)
 - RubyGems
 - GCC and Make
 - Jekyll (minimum v4)
-
 
 > **NOTE:**
 >
@@ -61,8 +56,8 @@ To complete the tutorial, the following prerequisites need to be installed:
 
 You can find the instructions on how to install Jekyll on the [Installation page for the Jekyll website](https://jekyllrb.com/docs/installation/). 
 
-
 # Backend Setup
+
 ## Strapi Installation
 
 The initial set up for the project involves installing and setting up Strapi as the backend for your Jekyll blog. It will host the content as well as the plugins to power up your blog.
@@ -76,7 +71,6 @@ yarn create strapi-app jekyll-blog-backend --quickstart
 ```
 
 ![Launch Strapi Quickstart](https://paper-attachments.dropbox.com/s_9D9561C99094CEA4A8FAD29310A6CE92ADD3DA95FDE835930B84E0E1343EE13B_1655741646133_strapi-quickstart-cmd.png)
-
 
 The strapi server should be running automatically on port 1337. Go to http://localhost:1337/admin in your browser to set up your admin for Strapi.
 
@@ -184,6 +178,7 @@ Now, test the link to the API by visiting http://localhost:1337/api/posts. If it
 Great job, your API is now working. With that the backend is all set.
 
 # Frontend Setup
+
 ## Jekyll Installation
 
 The next step is to set up your frontend for the blog. You will install Jekyll CLI and all its prerequisites using the instructions from the [Jekyll installation page](https://jekyllrb.com/docs/installation/). 
@@ -396,19 +391,125 @@ Once you’ve created your content click **Save**, repeat the same procedure for
 
 ![Strapi Posts with multiple Locales](https://www.dropbox.com/s/apwaeq877f4bvhl/strapi-posts-with-multiple-locales.png?raw=1)
 
+At the frontend, we need a way to consume the new locale data for our blog. Update `jekapi.rb` with the locale data from the Strapi API endpoint:
+
+```ruby
+#jekapi.rb
+
+require 'net/http'
+require 'json'
+require 'ostruct'
+
+url = 'http://localhost:1337/api/posts?populate=*'
+uri = URI(url)
+response = Net::HTTP.get(uri)
+result = JSON.parse(response, object_class: OpenStruct)
+result.data.each do |document|
+    post_file_locale_def = document.attributes.locale
+    post_file_name_suffix = document.attributes.Slug
+    post_file_date = document.attributes.createdAt
+    post_file_name_prefix = document.attributes.createdAt
+    post_file_name_prefix.slice!(10..24)
+    post_file_name = "#{post_file_name_prefix}-#{post_file_name_suffix}"
+    post_file_title = document.attributes.title
+    post_file_description = document.attributes.description
+    post_file_author = document.attributes.author.data.attributes.username
+    post_file_content = document.attributes.content
+
+    post_file = File.new("_posts/#{post_file_name}.md", "w")
+    post_file.puts("---")
+    post_file.puts("layout: post")
+    post_file.puts("title: \"#{post_file_title}\"")
+    post_file.puts("date: #{post_file_date}")
+    post_file.puts("description: #{post_file_description}")
+    post_file.puts("author: #{post_file_author}")
+    post_file.puts("locale: #{post_file_locale_def}")
+    post_file.puts("---")
+    post_file.puts("#{post_file_content}")
+
+    post_file_locale = document.attributes.localizations.data[0].attributes.locale
+    post_file_title_locale = document.attributes.localizations.data[0].attributes.title
+    post_file_description_locale = document.attributes.localizations.data[0].attributes.description
+    post_file_content_locale = document.attributes.localizations.data[0].attributes.content
+
+    post_file_alt = File.new("fr/_posts/#{post_file_name}.md", "w")
+    post_file_alt.puts("---")
+    post_file_alt.puts("layout: post")
+    post_file_alt.puts("title: \"#{post_file_title_locale}\"")
+    post_file_alt.puts("date: #{post_file_date}")
+    post_file_alt.puts("description: #{post_file_description_locale}")
+    post_file_alt.puts("author: #{post_file_author}")
+    post_file_alt.puts("locale: #{post_file_locale}")
+    post_file_alt.puts("---")
+    post_file_alt.puts("#{post_file_content_locale}")
+  end
+```
+
+Create a folder for your French content in your Jekyll working directory. Name the folder **fr** to match with the `locale: fr` configured in the Strapi dashboard. Within **fr** create a directory named **_posts**.
+
+Run the `jekapi.rb` script, then launch your Jekyll site. Open one of the posts and add a `/fr/` prefix to the site link to view the French version of your post. For example, There you have it, a simple implementation of internationalization in your website:
+
+![Jekyll Blog Post with multiple locales](https://www.dropbox.com/s/8qgajnb7wo8f5y8/jekyll-blog-post-with-multiple-locales.png?raw=1)
 
 # SEO Plugin
 
+What's a good blog without some [SEO](https://developers.google.com/search/docs/beginner/seo-starter-guide). The [Strapi Team developed the Strapi plugin SEO](https://market.strapi.io/plugins/@strapi-plugin-seo) to help with that
+
 ## Features
+
+- Easily see which Content-Types have the SEO Component or not
+- Preview content in the Search Engine Results Page (SERP)
+- Manage important meta tags like `metatitle` and `metadescription`
+- Manage meta social tags (Facebook and Twitter) for your content
+- Strong SEO analysis provided for your content
+
 ## Installation
+
+Install the **SEO** plugin by adding it as an NPM dependency to your Strapi backend application.
+
+```sh
+# Using Yarn
+yarn add @strapi/plugin-seo
+
+# Or using NPM
+npm install @strapi/plugin-seo
+```
+
 ## Configuration
+
+After installing, navigate to `./config/plugins.js` in your Strapi backend and add:
+
+```js
+module.exports = ({ env }) => ({
+  // ...
+  seo: {
+    enabled: true,
+  },
+  // ...
+});
+```
+Build your admin panel, then start your Strapi server:
+
+```sh
+$ yarn build
+$ yarn develop
+```
+Your Strapi dashboard should now have **SEO** listed under **Plugins**:
+
+![Strapi Dashboard with SEO Plugin](https://www.dropbox.com/s/rguvoy66xlp5czu/seo-plugin-installed-in-strapi.png?raw=1)
+
 ## How to use it
+
+
 
 # Cloudinary Provider Plugin
 
 ## Features
+
 ## Installation
+
 ## Configuration
+
 ## How to use it
 
 # Conclusion
